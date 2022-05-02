@@ -1,7 +1,8 @@
-build:
-	go build -o ./build/glimr
+build: 
+	go build -o ./glimr
 
-execute: 
-	./build/glimr
+server: build
+	./glimr server
 
-run: build execute
+client: build
+	./glimr client

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 
@@ -19,22 +18,23 @@ type glimrServer struct {
 
 func (gs *glimrServer) RequestVote(ctx context.Context, req *pb.RequestVoteRequest) (*pb.RequestVoteResponse, error) {
 	voteResponse = pb.RequestVoteResponse{}
+	log.Println("Client connected!")
 
 	return &voteResponse, nil
 }
 
-func main() {
+func startServer() {
 	conn, err := net.Listen("tcp", listenAddress)
 
 	if err != nil {
-		log.Fatal("tcp connection error: ", err.Error())
+		log.Fatal("tcp connection error:", err.Error())
 	}
 
 	grpcServer := grpc.NewServer()
 	glimrServer := glimrServer{}
 	pb.RegisterGlimrServer(grpcServer, &glimrServer)
 
-	fmt.Println("Starting glimr server at: ", listenAddress)
+	log.Println("Starting glimr server at:", listenAddress)
 
 	if err := grpcServer.Serve(conn); err != nil {
 		log.Fatal(err.Error())
